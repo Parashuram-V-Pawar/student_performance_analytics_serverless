@@ -19,3 +19,7 @@ BUCKET_NAME = os.getenv("BUCKET_NAME")
 def get_s3_client():
     session = boto3.Session(region_name=AWS_REGION)
     return session.client("s3")
+
+def dynamodb_client():
+    session = boto3.Session(region_name=AWS_REGION)
+    return session.client("dynamodb")
