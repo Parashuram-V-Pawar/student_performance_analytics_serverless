@@ -23,3 +23,7 @@ def get_s3_client():
 def dynamodb_client():
     session = boto3.Session(region_name=AWS_REGION)
     return session.client("dynamodb")
+
+def dynamodb_resource():
+    session = boto3.Session(region_name=AWS_REGION)
+    return session.resource("dynamodb")

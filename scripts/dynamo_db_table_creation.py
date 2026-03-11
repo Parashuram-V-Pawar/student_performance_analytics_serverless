@@ -15,7 +15,7 @@ try:
         }],
         AttributeDefinitions=[
             {
-                "AttributeName":"student_id", "AttributeType":'S'
+                "AttributeName":"student_id", "AttributeType":'N'
             }
         ],
         BillingMode="PAY_PER_REQUEST"
@@ -24,3 +24,6 @@ try:
 
 except dynamodb.exceptions.ResourceInUseException:
     logging.info("Table already exists")
+
+dynamodb.get_waiter('table_exists').wait(TableName='student_performance')
+logging.info("Table is now active")
