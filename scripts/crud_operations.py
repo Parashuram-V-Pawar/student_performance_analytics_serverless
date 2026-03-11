@@ -75,12 +75,12 @@ def delete_record(table, student_id):
 if __name__ == "__main__":
     insert_record(
         table,
-        student_id=1000001,
-        weekly_hours=Decimal("14.6"),
-        attendance=Decimal("75.7"),
-        participation=Decimal("9.5"),
-        score=Decimal("45.9"),
-        grade="B"
+        student_id = 1000001,
+        weekly_hours = Decimal("14.6"),
+        attendance = Decimal("75.7"),
+        participation = Decimal("9.5"),
+        score = Decimal("45.9"),
+        grade = "B"
     )
     read_data(table, student_id = 1000001)
     update_record(table, 
