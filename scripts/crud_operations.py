@@ -7,8 +7,20 @@ logging.basicConfig(level=logging.INFO)
 dynamodb = dynamodb_resource()
 table = dynamodb.Table("student_performance")
 
+# Function to categorizes the performance based on the score
+def get_performance_category(score):
+    if score >= 90:
+        return "Excellent"
+    elif score >= 75:
+        return "Good"
+    elif score >= 50:
+        return "Average"
+    else:
+        return "Poor"
+
+
 # Function to insert a new student record
-def insert_record(table,  student_id, weekly_hours, attendance, participation, score, grade, category):
+def insert_record(table,  student_id, weekly_hours, attendance, participation, score, grade):
     logging.info("Inserting new record into the table...")
     table.put_item(
         Item={
@@ -18,7 +30,7 @@ def insert_record(table,  student_id, weekly_hours, attendance, participation, s
             "class_participation": participation,
             "total_score": score,
             "grade": grade,
-            "performance_category": category
+            "performance_category": get_performance_category(score)
         }
     )
     logging.info("Insertion completed...")
@@ -67,9 +79,8 @@ if __name__ == "__main__":
         weekly_hours=Decimal("14.6"),
         attendance=Decimal("75.7"),
         participation=Decimal("9.5"),
-        score=Decimal("89.9"),
-        grade="B",
-        category="Good"
+        score=Decimal("45.9"),
+        grade="B"
     )
     read_data(table, student_id = 1000001)
     update_record(table, 
