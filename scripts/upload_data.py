@@ -7,7 +7,7 @@ from config.s3_config import get_s3_client, BUCKET_NAME
 
 logging.basicConfig(level=logging.INFO)
 
-def upload_file_to_s3(local_file = 'data/students_records.json', bucket_name = BUCKET_NAME, s3_key = "raw"):
+def upload_file_to_s3(local_file = 'data/students_records.json', s3_key = "raw", bucket_name = BUCKET_NAME):
     s3 = get_s3_client()
     file_ext = os.path.splitext(local_file)[1].lower()
     try:

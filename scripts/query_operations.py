@@ -1,7 +1,8 @@
 import logging
-from config.s3_config import dynamodb_resource
-from boto3.dynamodb.conditions import *
 from decimal import Decimal
+from boto3.dynamodb.conditions import *
+from config.s3_config import dynamodb_resource
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -18,6 +19,7 @@ def query_attendance_morethan_90():
         print(item)
     logging.info("Query completed. Found %d students with attendance more than 90%%.", len(result["Items"]))
 
+
 def query_weekly_study_hours_morethan_10():
     logging.info("Querying students with weekly study hours more than 10...")
     result = table.scan(
@@ -27,6 +29,7 @@ def query_weekly_study_hours_morethan_10():
     for item in result["Items"]:
         print(item)
     logging.info("Query completed. Found %d students with weekly study hours more than 10.", len(result["Items"]))
+
 
 def query_students_in_excellent_performance():
     logging.info("Querying students with excellent performance...")
