@@ -1,6 +1,7 @@
 
 data/
 venv/
+analytics/
 
 .env
 __pycache__/
