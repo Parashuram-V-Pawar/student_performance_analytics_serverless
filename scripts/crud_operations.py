@@ -1,14 +1,26 @@
+# Import statements
 import logging
 from config.s3_config import dynamodb_resource
 from decimal import Decimal
 
+# Initializing logging
 logging.basicConfig(level=logging.INFO)
 
+# Initializing DynamoDB resource and table reference
 dynamodb = dynamodb_resource()
 table = dynamodb.Table("student_performance")
 
 # Function to categorizes the performance based on the score
 def get_performance_category(score):
+    """
+    Categorize student performance based on total score.
+
+    Args:
+        score (Decimal | float): Student's total score.
+
+    Returns:
+        str: Performance category (Excellent, Good, Average, Poor).
+    """
     if score >= 90:
         return "Excellent"
     elif score >= 75:
@@ -21,6 +33,18 @@ def get_performance_category(score):
 
 # Function to insert a new student record
 def insert_record(table,  student_id, weekly_hours, attendance, participation, score, grade):
+    """
+    Insert a new student record into the DynamoDB table.
+
+    Args:
+        table: DynamoDB table resource.
+        student_id (int): Unique student identifier.
+        weekly_hours (Decimal): Weekly self-study hours.
+        attendance (Decimal): Attendance percentage.
+        participation (Decimal): Class participation score.
+        score (Decimal): Total student score.
+        grade (str): Student grade.
+    """
     logging.info("Inserting new record into the table...")
     table.put_item(
         Item={
@@ -37,6 +61,13 @@ def insert_record(table,  student_id, weekly_hours, attendance, participation, s
 
 # Function to retrieve student performance data using: student_id
 def read_data(table, student_id):
+    """
+    Retrieve a student record from DynamoDB.
+
+    Args:
+        table: DynamoDB table resource.
+        student_id (int): Unique student identifier.
+    """
     logging.info("Reading data from DynamoDB...")
     result = table.get_item(
         Key = {
@@ -48,6 +79,15 @@ def read_data(table, student_id):
 
 # Function to update records
 def update_record(table, student_id, column_name, new_value):
+    """
+    Update a specific attribute of a student record.
+
+    Args:
+        table: DynamoDB table resource.
+        student_id (int): Unique student identifier.
+        column_name (str): Attribute name to update.
+        new_value: New value for the attribute.
+    """
     logging.info("Updating existing data...")
     table.update_item(
         Key = {
@@ -62,6 +102,13 @@ def update_record(table, student_id, column_name, new_value):
 
 # Function to delete a record
 def delete_record(table, student_id):
+    """
+    Delete a student record from DynamoDB.
+
+    Args:
+        table: DynamoDB table resource.
+        student_id (int): Unique student identifier.
+    """
     logging.info("Deleting record...")
     table.delete_item(
         Key = {
