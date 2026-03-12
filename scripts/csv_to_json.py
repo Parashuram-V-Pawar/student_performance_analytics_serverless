@@ -1,8 +1,18 @@
+# Import statements
 import os
 import csv
 import json
 
 def csv_to_json_func(csv_file):
+    """
+    Convert a CSV file to JSON format.
+
+    Args:
+        csv_file (str): Path to the CSV file.
+
+    Returns:
+        str: Path to the generated JSON file.
+    """
     json_file = os.path.splitext(csv_file)[0] + ".json"
     data = []
     with open(csv_file, "r") as file:
