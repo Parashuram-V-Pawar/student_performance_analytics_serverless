@@ -27,3 +27,7 @@ def dynamodb_client():
 def dynamodb_resource():
     session = boto3.Session(region_name=AWS_REGION)
     return session.resource("dynamodb")
+
+def get_table():
+    dynamodb = dynamodb_resource()
+    return dynamodb.Table("student_performance")
