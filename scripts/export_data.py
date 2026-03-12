@@ -4,20 +4,18 @@ import logging
 import pandas as pd
 from config.s3_config import *
 from decimal import Decimal
+from scripts.upload_data import upload_file_to_s3
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
 
-# Initialize AWS clients
+# Initialize AWS clients and DynamoDB table
 s3 = get_s3_client()
 dynamodb = dynamodb_resource()
+table = get_table()
 
 # Configuring constant variables
-TABLE_NAME = "student_performance"
 EXPORT_FORMAT = "json"
-
-# Reference to the DynamoDB table
-table = dynamodb.Table(TABLE_NAME)
 
 # Convert DynamoDB Decimal to float
 def decimal_to_float(obj):
@@ -100,29 +98,6 @@ def save_file(items, format_type):
     return file_name
 
 
-# Upload file to S3
-def upload_to_s3(file_name):
-    '''
-    Upload the local file to the specified S3 bucket.
-    The file is uploaded to the `analytics/` prefix in the configured
-    S3 bucket.
-
-    Args:
-        file_name (str): Path to the local file to upload.
-
-    Returns:
-        None
-
-    Notes:
-        The destination key in S3 is automatically constructed using
-        the base filename of the provided file.
-    '''
-    logging.info(f"Uploading {file_name} to S3...")
-    key = f"analytics/{os.path.basename(file_name)}"
-    s3.upload_file(file_name, BUCKET_NAME, key)
-    logging.info(f"Uploaded to s3://{BUCKET_NAME}/{key}")
-
-
 def main():
     '''
     Execute the full student performance export pipeline.
@@ -139,8 +114,7 @@ def main():
     logging.info("Starting data export process...")
     items = fetch_all_records()
     file_name = save_file(items, EXPORT_FORMAT)
-    upload_to_s3(file_name)
-    logging.info("Data export process completed successfully!")
+    upload_file_to_s3(file_name, s3_key = "analytics")
 
 if __name__ == "__main__":
     main()
