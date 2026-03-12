@@ -1,8 +1,12 @@
+# import statements
 import logging
 from config.s3_config import dynamodb_resource
 from boto3.dynamodb.conditions import *
+
+# Initialize logging
 logging.basicConfig(level=logging.INFO)
 
+# Initialize DynamoDB resource and table
 dynamodb = dynamodb_resource()
 table = dynamodb.Table("student_performance")
 
@@ -45,7 +49,7 @@ def query_students_with_highest_scores():
     logging.info("Students with highest scores:")
     for item in result2["Items"]:
         print(f"Student ID: {item['student_id']}, Grade: {item['grade']}, Total Score: {item['total_score']}")
-        
+
     LastEvaluatedKey = result.get("LastEvaluatedKey")
     while LastEvaluatedKey:
         result = table.query(

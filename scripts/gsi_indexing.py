@@ -1,11 +1,18 @@
+# import statements
 import logging
 from config.s3_config import dynamodb_client
 
+#Initialize logging
 logging.basicConfig(level=logging.INFO)
 
+# Initialize DynamoDB client
 dynamodb = dynamodb_client()
 
 def create_gsi_on_grade_score():
+    '''
+    Create a Global Secondary Index (GSI) on the student_performance table
+    using grade as the partition key and total_score as the sort key.
+    '''
     try:
         logging.info("Creating GSI on grade and total score...")
         dynamodb.update_table(
