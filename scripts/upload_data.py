@@ -9,21 +9,32 @@ logging.basicConfig(level=logging.INFO)
 
 def upload_file_to_s3(local_file = 'data/student_performance.csv', bucket_name = BUCKET_NAME):
     s3 = get_s3_client()
-    json_file = csv_to_json_func(local_file)
-    if not os.path.exists(json_file):
-        logging.error("File doesn't exist. please check the path")
-        return
+    file_ext = os.path.splitext(local_file)[1].lower()
     try:
-        s3.upload_file(
-            json_file,
-            bucket_name,
-            'student_performance.json'
-        )
-        logging.info(f"Upload successful: s3://{bucket_name}/student_performance.json")
-    except NoCredentialsError:
-        logging.error("AWS credentials not available.")
-    except Exception as e:
-        logging.error(f"Upload failed: {e}")
+        # If CSV → convert to JSON
+        if file_ext == ".csv":
+            json_file = csv_to_json_func(local_file)
+        # If JSON → use file directly
+        elif file_ext == ".json":
+            json_file = local_file
+        else:
+            raise ValueError("Unsupported file format. Only CSV and JSON are allowed.")
+        if not os.path.exists(json_file):
+            logging.error("File doesn't exist. please check the path")
+            return
+        try:
+            s3.upload_file(
+                json_file,
+                bucket_name,
+                'student_performance.json'
+            )
+            logging.info(f"Upload successful: s3://{bucket_name}/student_performance.json")
+        except NoCredentialsError:
+            logging.error("AWS credentials not available.")
+        except Exception as e:
+            logging.error(f"Upload failed: {e}")
+    except ValueError as ve:
+        logging.error(ve)
 
 def list_s3_files(bucket_name = BUCKET_NAME):
     s3 = get_s3_client()
@@ -40,4 +51,4 @@ def list_s3_files(bucket_name = BUCKET_NAME):
 
 if __name__ == "__main__":
     upload_file_to_s3()
-    list_s3_files()
+    # list_s3_files()
