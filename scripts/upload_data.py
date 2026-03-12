@@ -7,7 +7,7 @@ from config.s3_config import get_s3_client, BUCKET_NAME
 
 logging.basicConfig(level=logging.INFO)
 
-def upload_file_to_s3(local_file = 'data/students_records.json', bucket_name = BUCKET_NAME):
+def upload_file_to_s3(local_file = 'data/students_records.json', bucket_name = BUCKET_NAME, s3_key = "raw"):
     s3 = get_s3_client()
     file_ext = os.path.splitext(local_file)[1].lower()
     try:
@@ -26,9 +26,9 @@ def upload_file_to_s3(local_file = 'data/students_records.json', bucket_name = B
             s3.upload_file(
                 json_file,
                 bucket_name,
-                f'raw/{os.path.basename(json_file)}'
+                f'{s3_key}/{os.path.basename(json_file)}'
             )
-            logging.info(f"Upload successful: s3://{bucket_name}/raw/{json_file}")
+            logging.info(f"Upload successful: s3://{bucket_name}/{s3_key}/{os.path.basename(json_file)}")
         except NoCredentialsError:
             logging.error("AWS credentials not available.")
         except Exception as e:
