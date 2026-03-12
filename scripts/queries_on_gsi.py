@@ -1,6 +1,6 @@
 # import statements
 import logging
-from config.s3_config import dynamodb_resource
+from config.s3_config import *
 from boto3.dynamodb.conditions import *
 
 # Initialize logging
@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Initialize DynamoDB resource and table
 dynamodb = dynamodb_resource()
-table = dynamodb.Table("student_performance")
+table = get_table()
 
 def query_top_students_by_gradea():
     '''
