@@ -39,6 +39,7 @@ https://www.kaggle.com/datasets/nabeelqureshitiii/student-performance-dataset/da
 
 ---
 ## Technology and Services Used
+```
 Cloud Platform: AWS
 AWS Services:
     - Amazon S3 – Dataset storage and event trigger
@@ -46,6 +47,7 @@ AWS Services:
     - Amazon DynamoDB – NoSQL database for storing student records
 Programming Language: Python 3
 Libraries: boto3
+```
 
 ---
 ## Features
