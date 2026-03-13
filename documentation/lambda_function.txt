@@ -1,0 +1,55 @@
+Steps to create lambda function:
+
+Step-1:  Login to the AWS Console -> Search for AWS Lambda
+        Click Lambda.
+
+Step-2: Create a New Function
+        1. Click Create Function
+        2. Select Author from scratch
+        3. Fill the details:
+            Function Name: student-performance-processor
+            Runtime: Python 3.10 (or latest Python)
+            Architecture: x86_64 (default)
+        Then click Create Function.
+
+Step-3: Configure Execution Role
+    Lambda needs permission to access AWS services.
+        Under Permissions:
+            Choose Create a new role with basic Lambda permissions
+        After creating the function, attach policies:
+            AmazonS3ReadOnlyAccess
+            AmazonDynamoDBFullAccess
+
+Step-4: Add Lambda Code
+    In the Code tab, replace the default code with your Python script.
+    (copy paste script in documentation/lambda_function.py of project folder)
+
+Step-5: Increase Timeout (Important)
+    Large files may take longer.
+    1. Go to Configuration
+    2. Click General configuration -> Click Edit
+    3. Change:
+        Timeout: 1 minute → 10-15 minutes
+        Memory: 128 MB → 2048 MB
+    4. Save changes.
+
+Step-6: Click Configuration tab
+    Scroll to Environment variables.
+    Click Edit → Add environment variable
+    Now add:
+        Key: DYNAMO_TABLE
+        value: student_performance
+    click save.
+
+Step - 7: Add S3 Trigger
+    Now connect Lambda with S3.
+    1. Go to Configuration -> Click Triggers
+    2. Click Add Trigger
+    3. Select:
+        Source: Amazon S3
+        Bucket: student-performance-datasets
+        Event type: All object create events (s3:ObjectCreated:*)
+    4. Click Add.
+    Now whenever a file is uploaded → Lambda runs automatically.
+
+Now the trigger is setup. Test by uploading any file.
