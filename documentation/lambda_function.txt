@@ -23,6 +23,7 @@ Step-3: Configure Execution Role
 Step-4: Add Lambda Code
     In the Code tab, replace the default code with your Python script.
     (copy paste script in documentation/lambda_function.py of project folder)
+    Then click on Deploy.
 
 Step-5: Increase Timeout (Important)
     Large files may take longer.
