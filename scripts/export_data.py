@@ -15,7 +15,7 @@ dynamodb = dynamodb_resource()
 table = get_table()
 
 # Configuring constant variables
-EXPORT_FORMAT = "json"
+EXPORT_FORMAT = "csv"
 
 # Convert DynamoDB Decimal to float
 def decimal_to_float(obj):
